@@ -28,5 +28,18 @@ namespace ApiLibrary.Controllers
                 return NotFound();
             return Ok(result);
         }
+        [HttpGet("platforms")]
+        public async Task<ActionResult<List<string>>> GetPlatforms()
+        {
+            var result = await this.repo.GetPlatformsAsync();
+            if (result == null)
+                return NotFound();
+            return Ok(result);
+        }
+        [HttpGet("platforms/{name}")]
+        public async Task<ActionResult<List<string>>> GetPlatformsVideoGame(string name)
+        {
+            return await this.repo.GetPlatformsVideoGamesAsync(name);
+        }
     }
 }

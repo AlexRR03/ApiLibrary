@@ -1,6 +1,8 @@
 ﻿using NugetLibraryModels;
 using ApiLibrary.Data;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
+using Microsoft.Data.SqlClient;
 
 namespace ApiLibrary.Repositories
 {
@@ -21,5 +23,21 @@ namespace ApiLibrary.Repositories
         {
             return await this.context.VideoGames.FirstOrDefaultAsync(x => x.Id == id);
         }
-    }
+        public async Task<List<string>> GetPlatformsAsync() {
+            return await this.context.Database
+        .SqlQueryRaw<string>($"SELECT Name FROM Platform")
+        .ToListAsync();
+        }
+        public async Task<List<String>> GetPlatformsVideoGamesAsync(string name)        
+        {
+            string sql = "EXEC SP_GetPlatformsByGame @GameName";
+
+        var platforms = await this.context.Database
+            .SqlQueryRaw<string>(sql, new SqlParameter("@GameName", name))
+            .ToListAsync();
+
+            return platforms;
+        }
+    
+}
 }
