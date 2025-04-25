@@ -18,17 +18,13 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi(pattern: "api/document.json");
-    app.MapScalarApiReference(options =>
+    app.MapGet("/", context =>
     {
-        options.OpenApiRoutePattern = "api/document.json";
-        options.Title = "Weather Forecast API Sample";
-        options.Theme = ScalarTheme.Default;
-        options.Favicon = "/favicon.svg";
-        options.Layout = ScalarLayout.Modern;
-        options.DarkMode = true;
-        options.CustomCss = "* { font-family: 'Monaco'; }";
+        context.Response.Redirect("/scalar");
+        return Task.CompletedTask;
     });
+    app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 app.UseHttpsRedirection();
 

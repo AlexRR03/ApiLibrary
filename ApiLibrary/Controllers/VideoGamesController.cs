@@ -28,7 +28,31 @@ namespace ApiLibrary.Controllers
                 return NotFound();
             return Ok(result);
         }
-        [HttpGet("platforms")]
+        [HttpGet("search")]
+        public async Task<ActionResult<List<VideoGame>>> Search(
+                [FromQuery] string? name = null,
+                [FromQuery] string? genre = null,
+                [FromQuery] int? year = null,
+                [FromQuery] string? developer = null)
+        {
+            try
+            {
+                var results = await this.repo.VideoGameSearch(name, genre, year, developer);
+
+
+
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                // Considera usar un logger aquí
+                return StatusCode(500, "Error interno al buscar videojuegos: " + ex.Message);
+            }
+        }
+
+
+
+            [HttpGet("platforms")]
         public async Task<ActionResult<List<string>>> GetPlatforms()
         {
             var result = await this.repo.GetPlatformsAsync();
