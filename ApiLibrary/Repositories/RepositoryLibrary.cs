@@ -123,7 +123,26 @@ namespace ApiLibrary.Repositories
             await this.context.UserVideoGames.AddAsync(userVideoGame);
             await this.context.SaveChangesAsync();
         }
-
+        public async Task UpdateVideoGameLibraryAsync(int idUser, int idVideoGame, int playtimeHours, string status)
+        {
+            UserVideoGame userVideoGame = await this.context.UserVideoGames.FirstOrDefaultAsync(x => x.UserId == idUser && x.VideoGameId == idVideoGame);
+            if (userVideoGame != null)
+            {
+                userVideoGame.PlayTimeHours = playtimeHours;
+                userVideoGame.Status = status;
+                this.context.UserVideoGames.Update(userVideoGame);
+                await this.context.SaveChangesAsync();
+            }
+        }
+        public async Task DeleteVideoGameLibraryAsync(int idUser, int idVideoGame)
+        {
+            UserVideoGame userVideoGame = await this.context.UserVideoGames.FirstOrDefaultAsync(x => x.UserId == idUser && x.VideoGameId == idVideoGame);
+            if (userVideoGame != null)
+            {
+                this.context.UserVideoGames.Remove(userVideoGame);
+                await this.context.SaveChangesAsync();
+            }
+        }
 
     }
 }

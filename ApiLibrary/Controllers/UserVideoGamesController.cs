@@ -52,5 +52,26 @@ namespace ApiLibrary.Controllers
 
             await this.repo.AddGameToLibraryAsync(user.Id, idVideoGame, playtimeHours, status);
         }
+
+        [Authorize]
+        [HttpPut]
+        [Route("[action]")]
+        public async Task UpdateVideoGameUserLibrary(int idVideoGame, int playtimeHours, string status)
+        {
+            Claim claim = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "datosUsuario");
+            string jsonUsuario = claim.Value;
+            User user = JsonConvert.DeserializeObject<User>(jsonUsuario);
+            await this.repo.UpdateVideoGameLibraryAsync(user.Id, idVideoGame, playtimeHours, status);
+        }
+        [Authorize]
+        [HttpDelete]
+        [Route("[action]")]
+        public async Task DeleteVideoGameUserLibrary(int idVideoGame)
+        {
+            Claim claim = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "datosUsuario");
+            string jsonUsuario = claim.Value;
+            User user = JsonConvert.DeserializeObject<User>(jsonUsuario);
+            await this.repo.DeleteVideoGameLibraryAsync(user.Id, idVideoGame);
+        }
     }
 }

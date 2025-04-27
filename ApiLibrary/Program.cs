@@ -1,12 +1,20 @@
 using ApiLibrary.Data;
 using ApiLibrary.Helpers;
 using ApiLibrary.Repositories;
+using Azure.Security.KeyVault.Secrets;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
 using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-string cnString = builder.Configuration.GetConnectionString("SqlAzure");
+builder.Services.AddAzureClients(factory =>
+{
+    factory.AddSecretClient(builder.Configuration.GetSection("KeyVault"));
+});
+SecretClient secretClient = builder.Services.BuildServiceProvider().GetService<SecretClient>();
+KeyVaultSecret secret = await secretClient.GetSecretAsync("SqlAzure");
+string cnString = secret.Value;
 builder.Services.AddTransient<RepositoryLibrary>();
 
 //Helper for JwtBearer
