@@ -29,6 +29,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+}
     app.MapGet("/", context =>
     {
         context.Response.Redirect("/scalar");
@@ -36,7 +37,6 @@ if (app.Environment.IsDevelopment())
     });
     app.MapOpenApi();
     app.MapScalarApiReference();
-}
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
