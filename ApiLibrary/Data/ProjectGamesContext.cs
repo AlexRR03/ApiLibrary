@@ -12,6 +12,11 @@ namespace ApiLibrary.Data
         public DbSet<UserVideoGame> UserVideoGames { get; set; }
         public DbSet<UserList> UserList { get; set; }
         public DbSet<UserListVideoGame> UserListVideoGame { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().ToTable("User");
+        }
     }
 }
 
